@@ -157,9 +157,15 @@ def event_handle(event):
             replyObj = TextSendMessage(text="ไม่ไป ไม่มีตังค์")
         else :
             replyObj = TextSendMessage(text=msg)
-        line_bot_api.reply_message(rtoken, replyObj)
-    elif msgType == "image":
-        try:
+            line_bot_api.reply_message(rtoken, replyObj)
+    else :
+            headers = request.headers
+            json_headers = ({k:v for k, v in headers.items()})
+            json_headers.update({'Host':'bots.dialogflow.com'})
+            url = "https://dialogflow.cloud.google.com/v1/integrations/line/webhook/4378f040-2c58-444b-9873-5d478cf0f1e5"
+            requests.post(url,data=json_line, headers=json_headers)
+    elf msgType == "image":
+    try:
             message_content = line_bot_api.get_message_content(event['message']['id'])
             i = Image.open(BytesIO(message_content.content))
             filename = event['message']['id'] + '.jpg'
